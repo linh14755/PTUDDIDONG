@@ -4,12 +4,13 @@ import { CartContext } from '../Contexts/Cart'
 
 import CartListItem from '../Components/CartListItem'
 import { TouchableOpacity } from 'react-native-gesture-handler'
+import {moneyFormat} from "../Utils/MoneyFormat";
 
 export default function Cart() {
     const { cartItem } = useContext(CartContext)
     return (
         <View style={styles.container}>
-            {cartItem.length == 0  && (
+            {cartItem.length == 0 && (
                 <Text style={styles.cartnull}>Giỏ hàng trống</Text>
             )}
             <FlatList style={{
@@ -31,12 +32,17 @@ export default function Cart() {
                 borderRadius: 4,
                 marginBottom: 8
             }}>
-                <Text style={{
-                    color: 'white',
-                    fontWeight: 'bold',
-                    fontSize: 24, 
-                    
-                }}>THANH TOÁN</Text>
+                <CartContext.Consumer>
+                    {value =>
+                        <Text style={{
+                            color: 'white',
+                            fontWeight: 'bold',
+                            fontSize: 24,
+
+                        }}>THANH TOÁN: {moneyFormat(parseInt(value.total))}</Text>
+
+                    }
+                </CartContext.Consumer>
             </TouchableOpacity>
         </View>
     );
@@ -52,11 +58,13 @@ const styles = StyleSheet.create({
         paddingRight: 4,
         paddingTop: 4
     },
-    cartnull:{
+    cartnull: {
         textTransform: 'uppercase',
         fontSize: 24,
         justifyContent: 'center',
         textAlign: 'center',
-        fontWeight: 'bold'
+        fontWeight: 'bold',
+        color: 'tomato',
+      
     }
 });

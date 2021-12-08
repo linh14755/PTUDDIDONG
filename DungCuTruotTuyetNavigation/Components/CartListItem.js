@@ -6,9 +6,10 @@ import {
     StyleSheet,
     TouchableOpacity,
 } from 'react-native'
-import MoneyFormat from '../Utils/MoneyFormat'
+import { moneyFormat } from '../Utils/MoneyFormat'
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import WebUrl from '../Utils/WebUrl';
+import { CartContext } from '../Contexts/Cart';
 
 
 
@@ -25,15 +26,32 @@ export default function CartListItem(props) {
             <View style={styles.title}>
                 <Text numberOfLines={1} style={styles.name}>{product.name}</Text>
                 <View style={styles.bottom}>
-                    <Text style={styles.price}> {MoneyFormat(product.price)}</Text>
+                    <Text style={styles.price}> {moneyFormat(product.price)}</Text>
                     <View style={styles.qty}>
-                        <Text>SL: {product.qty}</Text>
+                        <CartContext.Consumer>
+                            {value =>
+                                <TouchableOpacity onPress={() => value.updateCart('-', product.id, parseInt(product.price))}><Ionicons name="remove-circle-outline" color="tomato" size={26} /></TouchableOpacity>
+                            }
+                        </CartContext.Consumer>
+                        <Text style={styles.qtytext}>{product.qty}</Text>
+                        <CartContext.Consumer>
+                            {value =>
+                                <TouchableOpacity onPress={() => value.updateCart('+', product.id, parseInt(product.price))}><Ionicons name="add-circle-outline" color="tomato" size={26} /></TouchableOpacity>
+                            }
+                        </CartContext.Consumer>
+
+
                     </View>
                 </View>
             </View>
-            <TouchableOpacity style={styles.delete}>
-                <Ionicons name="close-circle-outline" color="tomato" size={36} />
-            </TouchableOpacity>
+            <CartContext.Consumer>
+                {value =>
+                    <TouchableOpacity style={styles.delete} onPress={() => value.deleteCart(product.id, parseInt(product.price * product.qty))}>
+                        <Ionicons name="close-circle-outline" color="tomato" size={36} />
+                    </TouchableOpacity>
+                }
+            </CartContext.Consumer>
+
         </View>
 
     );
@@ -42,7 +60,7 @@ export default function CartListItem(props) {
 
 const styles = StyleSheet.create({
     container: {
-        height: 110,
+        height: 120,
         backgroundColor: 'white',
         flexDirection: 'row',
         flex: 1,
@@ -63,15 +81,18 @@ const styles = StyleSheet.create({
         fontSize: 16
     },
     bottom: {
-        paddingTop: 18,
-        flexDirection: 'row',
-        flex: 1
+        flex: 1,
+        marginBottom: 10
     },
     price: {
-        flex: 0.8
+        flex: 0.6,
+
     },
     qty: {
-        flex: 0.2,
+        flex: 0.4,
+        flexDirection: 'row',
+        alignItems: 'center',
+
     }
     ,
     delete: {
@@ -80,11 +101,8 @@ const styles = StyleSheet.create({
         height: '100%',
         justifyContent: 'center'
     },
-    qtyinput: {
-        width: 20,
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'center',
-        textAlign: 'center',
+
+    qtytext: {
+        marginHorizontal: 15
     }
 })

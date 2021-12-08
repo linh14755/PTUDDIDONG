@@ -1,4 +1,3 @@
 
-export default function moneyFormat(num) {
-    return parseInt(num).toFixed(0).replace(/(\d)(?=(\d{3})+(?!\d))/g, '1.') + ' VNĐ'
-}
+export const moneyFormat = (num) => `${num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")} VNĐ`
+

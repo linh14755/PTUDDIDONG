@@ -9,10 +9,13 @@ export class CartProvider extends Component {
         super(props)
         //Tạo một state là cartItem để lưu sản phẩm
         this.state = {
-            cartItem: []
+            cartItem: [],
+            total: 0
         }
         //để render được func thì phải bind nó
         this.addToCart = this.addToCart.bind(this)
+        this.updateCart = this.updateCart.bind(this)
+        this.deleteCart = this.deleteCart.bind(this)
     }
 
     //function set trạng thái cho state khi nhấn addToCart
@@ -21,22 +24,60 @@ export class CartProvider extends Component {
         const exist = this.state.cartItem.find(x => x.id === product.id);
         if (exist) {
             this.state.cartItem.map((x) => x.id === product.id ? x.qty = x.qty + 1 : x)
+            this.setState({
+                total: parseInt(this.state.total) + parseInt(product.price)
+            })
         } else {
             product['qty'] = 1;
+
             this.setState({
-                cartItem: this.state.cartItem.concat(product)
+                cartItem: this.state.cartItem.concat(product),
+                total: parseInt(this.state.total) + parseInt(product.price)
             })
         }
         Alert.alert('Thêm giỏ hàng thành công!')
     }
 
-    
+    updateCart(type, id, price) {
+        if (type == '+') {
+            const exist = this.state.cartItem.find(x => x.id === id);
+            if (exist) {
+                this.state.cartItem.map((x) => x.id === id ? x.qty = x.qty + 1 : x)
+                this.setState({
+                    total: this.state.total + price
+                })
+            }
+        }
+        if (type == '-') {
+            const exist = this.state.cartItem.find(x => x.id === id && x.qty > 1);
+            if (exist) {
+                this.state.cartItem.map((x) => x.id === id ? x.qty = x.qty - 1 : x)
+                this.setState({
+                    total: this.state.total - price
+                })
+            }
+        }
+    }
+
+
+    deleteCart(id, total) {
+        //Lọc ra mảng cartItem mới bỏ qua item có id cần xóa
+        let filteredArray = this.state.cartItem.filter(item => item.id !== id)
+        this.setState({
+            cartItem: filteredArray,
+            total: this.state.total - total
+        });
+
+    }
 
     //trả về một ContextProvider gồm có: cartItem với cartItem có trạng thái state và func addToCart
     render() {
         return <CartContext.Provider value={{
             cartItem: this.state.cartItem,
             addToCart: this.addToCart,
+            updateCart: this.updateCart,
+            deleteCart: this.deleteCart,
+            total: this.state.total
         }}>
             {this.props.children}
         </CartContext.Provider>

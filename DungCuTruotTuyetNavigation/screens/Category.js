@@ -3,7 +3,6 @@ import { StyleSheet, View, ActivityIndicator, FlatList, Text } from 'react-nativ
 import ProductListItem from '../Components/ProductListItem';
 
 import WebUrl from '../Utils/WebUrl';
-import { useNavigation } from '@react-navigation/core';
 
 
 export default function Category({ route }) {

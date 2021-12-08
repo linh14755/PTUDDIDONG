@@ -10,7 +10,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 
 import WebUrl from '../Utils/WebUrl';
 import { CartContext } from '../Contexts/Cart';
-import moneyFormat from '../Utils/MoneyFormat';
+import {moneyFormat} from '../Utils/MoneyFormat';
 
 
 export default function ProductListItem(props) {
@@ -19,6 +19,8 @@ export default function ProductListItem(props) {
 
     //Thuộc tính onPress bên dưới khi được click sẽ gọi screen Category bằng useNavigation
     return (
+        
+        
         <TouchableOpacity>
             <View style={styles.shadow}>
                 <View style={styles.container}>
@@ -60,13 +62,13 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.1,
         shadowRadius: 10,
         shadowOffset: { width: 0, height: 0 },
-        marginTop: 4
+        marginBottom: 8
+
     },
     container: {
         borderRadius: 4,
         backgroundColor: '#FFF',
         overflow: 'hidden',
-        marginBottom: 8
     },
     info: {
         padding: 8,
