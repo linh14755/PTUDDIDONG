@@ -12,9 +12,10 @@ export const CustomerContextProvider = ({ children }) => {
     const [isLoading, setIsLoading] = useState(false);
     const navigation = useNavigation();
 
-    const login = (lemail, lpassword) => {
+    const login = async (lemail, lpassword) => {
         setIsLoading(true)
         try {
+
             fetch(WebUrl() + '/api/login', {
                 method: 'POST',
                 headers: {
@@ -30,8 +31,8 @@ export const CustomerContextProvider = ({ children }) => {
                 .then((response) => response.json())
                 .then((json) => {
                     if (json.code == 200) {
-                        setCustomerInfo(json)
                         AsyncStorage.setItem('customerInfo', JSON.stringify(json.customer))
+                        setCustomerInfo(json)
                         setIsLoading(false)
                         navigation.navigate("MainView")
                     } else {
@@ -47,7 +48,7 @@ export const CustomerContextProvider = ({ children }) => {
 
     const logout = async () => {
         setIsLoading(true)
-         try {
+        try {
             AsyncStorage.removeItem('customerInfo')
             setIsLoading(false)
             return navigation.navigate("Login")
@@ -57,7 +58,7 @@ export const CustomerContextProvider = ({ children }) => {
         }
     }
 
-    
+
 
     return (
         <CustomerContext.Provider value={{

@@ -1,22 +1,77 @@
-import React, { Component } from "react";
+import React, { Component, useContext } from "react";
 import { Alert } from "react-native";
+import WebUrl from '../Utils/WebUrl';
+
 
 //Tạo Context
 export const CartContext = React.createContext();
+
 
 export class CartProvider extends Component {
     constructor(props) {
         super(props)
         //Tạo một state là cartItem để lưu sản phẩm
+
         this.state = {
             cartItem: [],
-            total: 0
+            total: 0,
+            detailFormCheckout: [],
+            isConfirm: false
         }
         //để render được func thì phải bind nó
         this.addToCart = this.addToCart.bind(this)
         this.updateCart = this.updateCart.bind(this)
         this.deleteCart = this.deleteCart.bind(this)
+        this.setDetailFormCheckout = this.setDetailFormCheckout.bind(this)
+        this.postCheckout = this.postCheckout.bind(this)
+        this.resetConfirm = this.resetConfirm(this)
     }
+    resetConfirm = () => {
+        this.setState({
+            isConfirm: false
+        })
+    }
+
+    postCheckout = (customerInfo) => {
+        try {
+            fetch(WebUrl() + '/api/checkout', {
+                method: 'POST',
+                headers: {
+                    Accept: 'application/json',
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(
+                    {
+                        email: this.state.detailFormCheckout[0].email,
+                        name: this.state.detailFormCheckout[0].name,
+                        address: this.state.detailFormCheckout[0].address,
+                        phone: this.state.detailFormCheckout[0].phone,
+                        note: this.state.detailFormCheckout[0].note,
+                        customer_id: customerInfo.id,
+                        payment_method: 'cash',
+                        order_total: this.state.total,
+                        carts: this.state.cartItem,
+                    }
+                )
+            })
+                .then((response) => response.json())
+                .then((json) => {
+                    if (json.code == 200) {
+                        Alert.alert('Cảm ơn bạn đã đặt hàng chúng tôi sẽ liên hệ bạn sớm nhất.')
+                        this.setState({
+                            cartItem: [],
+                            total: 0,
+                            isConfirm: true
+                        })
+                    } else {
+                        Alert.alert(json.message)
+                    }
+                })
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
 
     //function set trạng thái cho state khi nhấn addToCart
     addToCart(product) {
@@ -70,6 +125,12 @@ export class CartProvider extends Component {
 
     }
 
+    setDetailFormCheckout(val) {
+        this.setState({
+            detailFormCheckout: val
+        })
+    }
+
     //trả về một ContextProvider gồm có: cartItem với cartItem có trạng thái state và func addToCart
     render() {
         return <CartContext.Provider value={{
@@ -77,7 +138,12 @@ export class CartProvider extends Component {
             addToCart: this.addToCart,
             updateCart: this.updateCart,
             deleteCart: this.deleteCart,
-            total: this.state.total
+            setDetailFormCheckout: this.setDetailFormCheckout,
+            total: this.state.total,
+            detailFormCheckout: this.state.detailFormCheckout,
+            postCheckout: this.postCheckout,
+            isConfirm: this.state.isConfirm,
+            resetConfirm: this.resetConfirm
         }}>
             {this.props.children}
         </CartContext.Provider>

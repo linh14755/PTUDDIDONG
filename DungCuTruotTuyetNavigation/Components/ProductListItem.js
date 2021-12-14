@@ -7,21 +7,20 @@ import {
     TouchableOpacity,
 } from 'react-native'
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import { useNavigation } from '@react-navigation/native';
 
 import WebUrl from '../Utils/WebUrl';
 import { CartContext } from '../Contexts/Cart';
-import {moneyFormat} from '../Utils/MoneyFormat';
-
+import { moneyFormat } from '../Utils/MoneyFormat';
 
 export default function ProductListItem(props) {
 
     const { product } = props;
-
+    const navigation = useNavigation();
+    
     //Thuộc tính onPress bên dưới khi được click sẽ gọi screen Category bằng useNavigation
     return (
-        
-        
-        <TouchableOpacity>
+        <TouchableOpacity onPress={() => navigation.navigate('ProductDetail', product)}>
             <View style={styles.shadow}>
                 <View style={styles.container}>
                     <Image
@@ -36,7 +35,7 @@ export default function ProductListItem(props) {
                             <CartContext.Consumer>
                                 {value =>
                                     <TouchableOpacity onPress={() => value.addToCart(product)}>
-                                        <Text style={styles.cartText}><Ionicons name="cart-outline" color="tomato" size={36}></Ionicons></Text>
+                                        <Text style={styles.cartText}><Ionicons name="cart-outline" color="tomato" size={28}></Ionicons></Text>
                                     </TouchableOpacity>
                                 }
                             </CartContext.Consumer>

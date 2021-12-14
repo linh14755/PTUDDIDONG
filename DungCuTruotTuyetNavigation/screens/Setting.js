@@ -1,17 +1,30 @@
-import React, { useContext } from 'react'
+import React, { useContext, useState, useEffect } from 'react'
 import { View, TouchableOpacity, Text, StyleSheet } from 'react-native'
 import Spinner from 'react-native-loading-spinner-overlay'
 import { CustomerContext } from '../Contexts/CustomerContext'
-
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import Ionicons from 'react-native-vector-icons/Ionicons'
 
 export default function Setting() {
-    const { customerInfo, logout, isLoading } = useContext(CustomerContext)
-   
+    const { logout, isLoading } = useContext(CustomerContext)
+    const [customerInfo, setCustomerInfo] = useState([]);
+
+    useEffect(() => {
+        AsyncStorage.getItem('customerInfo')
+            .then(value => {
+                if (value != null) {
+                    setCustomerInfo(JSON.parse(value))
+                }
+            }
+            )
+    }, [])
     return (
         <View style={styles.container}>
             <Spinner visible={isLoading} />
-            <Text style={styles.text}>Xin chào, {customerInfo.customer.name}</Text>
-            <TouchableOpacity style={styles.button} onPress={ logout } >
+            <Ionicons name="person-circle-outline" size={128}></Ionicons>
+            <Text style={styles.text}>Xin chào, {customerInfo.name}</Text>
+            <Text >{customerInfo.email}</Text>
+            <TouchableOpacity style={styles.button} onPress={logout} >
                 <Text style={styles.logoutText}>Logout</Text>
             </TouchableOpacity>
         </View >
@@ -21,6 +34,7 @@ export default function Setting() {
 
 const styles = StyleSheet.create({
     container: {
+        backgroundColor: "#ecf0f1",
         justifyContent: 'center',
         alignSelf: 'center',
         alignContent: 'center',
@@ -45,7 +59,8 @@ const styles = StyleSheet.create({
     },
     text: {
         fontWeight: 'bold',
-        fontSize: 18
+        fontSize: 18,
+        marginVertical: 8
     }
 
 });

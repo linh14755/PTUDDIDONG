@@ -65,12 +65,12 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         flex: 1,
         marginTop: 4,
-        borderRadius: 4,
+        borderRadius: 8,
     },
     img: {
         flex: 0.25,
-        borderTopLeftRadius: 4,
-        borderBottomLeftRadius: 4
+        borderTopLeftRadius: 8,
+        borderBottomLeftRadius: 8
     },
     title: {
         flex: 0.6,

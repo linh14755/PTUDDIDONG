@@ -1,8 +1,8 @@
 import React from 'react';
-import { ActivityIndicator, StyleSheet, View, FlatList,Text } from 'react-native';
+import { ActivityIndicator, StyleSheet, View, FlatList, Text } from 'react-native';
 import CategoryListItem from '../Components/CategoryListItem.js';
 
-import WebUrl  from '../Utils/WebUrl'
+import WebUrl from '../Utils/WebUrl'
 
 //export: trả màn hình này ra để các File khác có thể gọi
 export default class Categories extends React.Component {
@@ -14,7 +14,7 @@ export default class Categories extends React.Component {
       isLoading: true
     }
   }
-  
+
 
   async getCategories() {
     try {
@@ -28,6 +28,7 @@ export default class Categories extends React.Component {
     }
   }
 
+  //gọi lúc khởi tạo Component
   componentDidMount() {
     this.getCategories();
   }
@@ -39,13 +40,11 @@ export default class Categories extends React.Component {
       <View style={styles.container}>
         {isLoading ? <ActivityIndicator size="large" color="#0000ff" /> : (
           <FlatList
-         
             data={categories}
             renderItem={({ item }) => <CategoryListItem category={item} />}
             keyExtractor={item => item.id}
           />
         )}
-
 
       </View>
     );

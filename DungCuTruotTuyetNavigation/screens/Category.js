@@ -9,7 +9,6 @@ export default function Category({ route }) {
 
   const {CategoryId } = route.params;
   
-
   const [isLoading, setLoading] = useState(true);
   const [product, setData] = useState([]);
 

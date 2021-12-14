@@ -1,9 +1,9 @@
 import React from 'react'
 import { Text } from 'react-native'
 
-export default function Orders() {
+export default function ViewOrder() {
     return (
-        <Text>Day la orders</Text>
+        <Text>Day la view orders</Text>
     )
 }
 

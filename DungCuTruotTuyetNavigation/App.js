@@ -13,9 +13,8 @@ export default function App() {
     <NavigationContainer>
       <CustomerContextProvider>
         <MainStack.Navigator screenOptions={{ headerShown: false }}>
-        <MainStack.Screen name="MainView" component={MainView} />
           <MainStack.Screen name="Login" component={Login} />
-          
+          <MainStack.Screen name="MainView" component={MainView} />
         </MainStack.Navigator>
       </CustomerContextProvider>
     </NavigationContainer>
