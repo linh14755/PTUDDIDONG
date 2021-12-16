@@ -24,7 +24,8 @@ export class CartProvider extends Component {
         this.deleteCart = this.deleteCart.bind(this)
         this.setDetailFormCheckout = this.setDetailFormCheckout.bind(this)
         this.postCheckout = this.postCheckout.bind(this)
-        this.resetConfirm = this.resetConfirm(this)
+        this.resetConfirm = this.resetConfirm.bind(this)
+       
     }
     resetConfirm = () => {
         this.setState({
@@ -57,7 +58,6 @@ export class CartProvider extends Component {
                 .then((response) => response.json())
                 .then((json) => {
                     if (json.code == 200) {
-                        Alert.alert('Cảm ơn bạn đã đặt hàng chúng tôi sẽ liên hệ bạn sớm nhất.')
                         this.setState({
                             cartItem: [],
                             total: 0,
@@ -131,6 +131,7 @@ export class CartProvider extends Component {
         })
     }
 
+ 
     //trả về một ContextProvider gồm có: cartItem với cartItem có trạng thái state và func addToCart
     render() {
         return <CartContext.Provider value={{
@@ -143,7 +144,8 @@ export class CartProvider extends Component {
             detailFormCheckout: this.state.detailFormCheckout,
             postCheckout: this.postCheckout,
             isConfirm: this.state.isConfirm,
-            resetConfirm: this.resetConfirm
+            resetConfirm: this.resetConfirm,
+           
         }}>
             {this.props.children}
         </CartContext.Provider>

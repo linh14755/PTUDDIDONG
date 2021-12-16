@@ -21,7 +21,7 @@ export default function Setting() {
     return (
         <View style={styles.container}>
             <Spinner visible={isLoading} />
-            <Ionicons name="person-circle-outline" size={128}></Ionicons>
+            <Ionicons name="person-circle-outline" size={156}></Ionicons>
             <Text style={styles.text}>Xin chào, {customerInfo.name}</Text>
             <Text >{customerInfo.email}</Text>
             <TouchableOpacity style={styles.button} onPress={logout} >
@@ -44,13 +44,12 @@ const styles = StyleSheet.create({
     },
     button: {
         marginTop: 42,
-        borderWidth: 1,
         height: 42,
         width: '70%',
         borderRadius: 40,
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: 'black'
+        backgroundColor: 'tomato'
     },
     logoutText: {
         color: 'white',

@@ -14,11 +14,31 @@ export default function Checkout({ navigation }) {
     return (
         <View style={styles.container}>
             {isConfirm ?
-                <View>
-                    {
-                        navigation.goBack(),
-                        resetConfirm()
-                    }
+                <View style={{ alignItems: 'center', justifyContent: 'center', marginHorizontal: 20}}>
+                    <Ionicons name="shield-checkmark-outline" size={136} color='tomato' />
+                    <Text style={{ fontSize: 18 }}>Đặt hàng thành công</Text>
+                    <Text style={{ fontSize: 18, marginVertical:12 }}> Chúng tôi sẽ liên hệ tới bạn sớm nhất!</Text>
+                    
+                        <TouchableOpacity
+                        onPress={() => {
+                            resetConfirm()
+                            navigation.navigate("Cart");
+                        }}
+                            style={{
+                                backgroundColor: 'tomato',
+                                padding: 10,
+                                alignItems: 'center',
+                                borderRadius: 50,
+                                paddingHorizontal: 36
+                            }}>
+                            <Text style={{
+                                color: 'white',
+                                fontWeight: 'bold',
+                                fontSize: 20,
+
+                            }}>QUAY LẠI</Text>
+                        </TouchableOpacity>
+
                 </View>
                 :
                 <View style={{ flex: 1 }}>
